@@ -1,9 +1,10 @@
+{% load static %}
 <div class="container">
-  <a href="/" class="header__logo">
-    <img src="assets/logo.svg" />
+  <a href="{% url 'home' %}" class="header__logo">
+    <img src="{% static 'assets/logo.svg' %}" />
     <h1>StudyBuddy</h1>
   </a>
-  <form class="header__search">
+  <form class="header__search" action="{% url 'home' %}" method="GET">
     <label>
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
         <title>search</title>
@@ -11,24 +12,24 @@
           d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
         </path>
       </svg>
-      <input placeholder="Search for rooms..." />
+      <input placeholder="Search for rooms..." type="text" name="q" />
     </label>
   </form>
   <nav class="header__menu">
+    {% if request.user.is_authenticated == False %}
     <!-- Not Logged In -->
-    <!-- <a href="/login.html">
-            <img src="./assets/avatar.svg" />
+    <a href="{% url 'login' %}">
+            <img src="{% static 'assets/avatar.svg' %}" />
             <p>Login</p>
-          </a> -->
-
+          </a>
+    {% else %}
     <!-- Logged In -->
-
     <div class="header__user">
       <a href="profile.html">
         <div class="avatar avatar--medium active">
           <img src="https://randomuser.me/api/portraits/men/37.jpg" />
         </div>
-        <p>John Doe <span>@john_doe</span></p>
+        <p>{{request.user}} <span>@{{request.user}}</span></p>
       </a>
       <button class="dropdown-button">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -47,7 +48,7 @@
           </path>
         </svg>
         Settings</a>
-      <a href="login.html" class="dropdown-link"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32"
+      <a href="{% url 'logout' %}" class="dropdown-link"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32"
           height="32" viewBox="0 0 32 32">
           <title>sign-out</title>
           <path
@@ -60,40 +61,5 @@
         Logout</a>
     </div>
   </nav>
+  {% endif %}
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a href="/">
-  <h1>Home</h1>
-</a>
-
-<!-- If the user is logged in then show logout button and vice versa -->
-{% if request.user.is_authenticated %}
-<h3> Welcome {{request.user}} </h3>
-<a href="{% url 'logout' %}">Logout</a>
-{% else %}
-<a href="{% url 'login' %}">Login</a>
-{% endif %}
-
-
-<form action="{% url 'home' %}" method="GET" >
-
-  <input type="text" name="q"  placeholder="Search For a Room ....">
-
-</form>
-
-<hr>
