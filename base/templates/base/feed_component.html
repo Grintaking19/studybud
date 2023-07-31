@@ -1,0 +1,30 @@
+
+{% block content %}
+  {% if room_count == 1 %}
+  <h5> {{room_count}} Room available </h5>
+  {% else %}
+  <h5> {{room_count}} Rooms available </h5>
+  {% endif %}
+
+  <a href="{% url 'create-room' %}"> Create Room </a>
+  <div>
+    {% for room in rooms %}
+    {% if request.user == room.host %}
+    <a href="{% url 'update-room' room.id %}">Edit</a>
+    <a href="{% url 'delete-room' room.id %}">Delete</a>
+    {% endif %}
+
+    <a href="{% url 'user-page' room.host.id %}">@{{room.host.username}}</a>
+    <div>
+      <h5>
+        {{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}} </a>
+      </h5>
+    </div>
+    <small>{{room.topic.name}}</small>
+
+    <hr />
+
+    {% endfor %}
+  </div>
+
+{% endblock content %}

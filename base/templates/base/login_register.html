@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% if page == 'login' %}
+      <form action="" method="POST">
+          {% csrf_token %}
+          <label for="username"> Username</label>
+          <input  name="username" placeholder="Enter a Username" type="text">
+
+          <label for="password"> Password</label>
+          <input name="password" placeholder="Enter a Password" type="password">
+
+          <input type="submit" value="Login">
+          
+          <p> Haven't signed up yet? </p>
+          <a href="{% url 'register' %}">Register</a>
+      </form>
+
+
+    {% else %}
+      <form action="" method="POST">
+        {% csrf_token %}
+        <!-- This form is the one we got from UserCreationForm() -->
+        {{form.as_p}}
+        <input type="submit" value="Register">
+        <p> Already have an account?</p>
+        <a href="{% url 'login' %}">Login</a>
+      </form>
+      
+    {% endif %}
+    
+    {% if messages %}
+        {% for message in messages %}
+        <div>
+          {{message}}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}
