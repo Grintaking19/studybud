@@ -483,6 +483,12 @@ a {
   width: 100%;
 }
 
+.form__group__delete {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
 .form__split {
   display: flex;
   gap: 1.5rem;
@@ -533,6 +539,13 @@ a {
   display: flex;
   justify-content: flex-end;
   gap: 3rem;
+}
+
+.form__action__delete{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .form__hide {

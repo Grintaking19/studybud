@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from  django.contrib.auth.models import User
 from .models import Room, Topic, Message
-from .form import RoomForm, MessageForm
+from .form import RoomForm, MessageForm, UserForm
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -168,9 +168,9 @@ def deleteMessage(request, pk):
 
     if request.method == 'POST':
         message.delete()
-        return redirect('room', pk=message.room.id)
+        return redirect('delete-message', pk=message.id)
 
-    return redirect('home')
+    return render(request, 'base/delete.html', context={'obj': message})
 
 
 @login_required(login_url = 'login')
@@ -203,6 +203,31 @@ def userProfile(request, pk):
     return render(request, 'base/profile.html', {'user': user, 'rooms': rooms, 'messages': messages, 'topics': topics, 'room_count': rooms.count})
 
 
+@login_required(login_url = 'login')
+def updateUser(request, pk):
+    user = User.objects.get(id=pk)
+    form = UserForm(instance=user)
+
+    if request.user != user:
+        return HttpResponse('You are not allowed here!')
+    
+    if (request.method == 'POST'):
+        form = UserForm(request.POST, instance=user)
+        print('Patch Request: ',request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('user-page', pk=user.id)
+
+    context = {'form': form}
+    return render(request, 'base/update-user.html', context)
+    
 
 
+def topicsPage(request):
+    topics = Topic.objects.filter(name__icontains=request.GET.get('q'))
+    return render(request, 'base/topics.html', {'topics': topics})
+
+def activityPage(request):
+    messages = Message.objects.filter(body__icontains=request.GET.get('q'))
+    return render(request, 'base/activity.html', {'messages': messages})
 
