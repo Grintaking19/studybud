@@ -1,5 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
+{% load static %}
   <body>
     <main class="layout layout--3">
       <div class="container">
@@ -16,7 +17,7 @@
         <!-- Activities End -->
       </div>
     </main>
-    <script src="script.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
   </body>
 {% endblock content %}
 
