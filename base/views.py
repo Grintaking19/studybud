@@ -75,8 +75,10 @@ def home(request):
         )
     
     room_count = rooms.count()
-    messages = Message.objects.filter(Q(room__topic__name__icontains= q) | Q(room__name__icontains= q) | Q(user__username__icontains= q))    
-    topics = Topic.objects.all()
+    # if the user is not searching for specific word then show the lastest 7 messages
+    # else show the messages that contains the word he is searching for
+    messages = Message.objects.filter(Q(room__topic__name__icontains= q) | Q(room__name__icontains= q) | Q(user__username__icontains= q)) if q != '' else Message.objects.all()[0:7]    
+    topics = Topic.objects.all()[0:5]
     context = {'rooms': rooms, 'topics': topics, 'room_count': room_count, 'messages': messages}
     return render(request, 'base/home.html', context)
 
@@ -224,10 +226,11 @@ def updateUser(request, pk):
 
 
 def topicsPage(request):
-    topics = Topic.objects.filter(name__icontains=request.GET.get('q'))
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    topics = Topic.objects.filter(Q(name__icontains=q))
     return render(request, 'base/topics.html', {'topics': topics})
 
 def activityPage(request):
-    messages = Message.objects.filter(body__icontains=request.GET.get('q'))
+    messages = Message.objects.filter()
     return render(request, 'base/activity.html', {'messages': messages})
 
