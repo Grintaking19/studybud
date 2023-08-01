@@ -191,7 +191,7 @@ def userProfile(request, pk):
     rooms = user.room_set.all() # relation between user and room is many to many, so we use room_set
     messages = user.message_set.all() # relation between user and message is one to many, so we use message_set
     topics = Topic.objects.all()
-    return render(request, 'base/profile.html', {'user': user, 'rooms': rooms, 'messages': messages, 'topics': topics})
+    return render(request, 'base/profile.html', {'user': user, 'rooms': rooms, 'messages': messages, 'topics': topics, 'room_count': rooms.count})
 
 
 
