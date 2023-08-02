@@ -1,2 +1,2 @@
 # studybud
-Chat application for creating for finding study partners
+Chat application for finding study partners using django.
